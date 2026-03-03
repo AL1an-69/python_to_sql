@@ -1,7 +1,13 @@
+import os
+from dotenv import load_dotenv
+
+# Загружаем переменные из .env файла
+load_dotenv()
+
 DB_CONFIG = {
-    'host': 'mysql.65e3ab49565f.hosting.myjino.ru',
-    'user': 'j30084097',
-    'password': '7f9vGAxSu',
-    'database': 'j30084097_13418',
-    'port': 3306,
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'database': os.getenv('DB_NAME'),
+    'port': int(os.getenv('DB_PORT', 3306))
 }
