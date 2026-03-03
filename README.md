@@ -5,7 +5,7 @@ from database import db
 # создать таблицу
 db.create_table('users', {'name': 'VARCHAR(100)', 'age': 'INT'})
 
-# добавить челика
+# добавить 
 db.insert('users', {'name': 'Иван', 'age': 20})
 
 # посмотреть всех
