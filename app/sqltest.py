@@ -1,5 +1,6 @@
 import pymysql
 from app.config import DB_CONFIG
+import csv
 
 
 
@@ -68,6 +69,8 @@ class Database:
         self.conn.commit()
         print(f"Таблица {table} полносью удалена")
 
+    ################################
+    
     """новые запросы для лр_1"""
 
 
@@ -76,12 +79,12 @@ class Database:
         self.conn.commit()
         print(f"Таблица {table} отсартирована убывающе по столбцу {colum} ")
     
-    def id_range(self,table,start_id,end_id):
+    def id_range_select(self,table,start_id,end_id):
         self.cursor.execute(f"SELECT * FROM {table} WHERE BERWEN {start_id} AND {end_id}")
         self.conn.commit()
         print(f"Выведены все значения из талицы {table} в диапазоне айди от {start_id} до {end_id}")
 
-    def id_range(self,table,start_id,end_id):
+    def id_range_delete(self,table,start_id,end_id):
         self.cursor.execute(f"DELETE * FROM {table} WHERE BERWEN {start_id} AND {end_id}")
         self.conn.commit()
         print(f"Удалены все значения из талицы {table} в диапазоне айди от {start_id} до {end_id}") 
@@ -94,15 +97,35 @@ class Database:
         self.cursor.execute(f"SELECT * FROM {table} WHERE {column} = {value}")
         print(f"Выведены все столбцы {colum} со значением {value}")
         
-
+    def add_colum(self,table,colum,typ):
+        self.cursor.execute(f"ALTER TABLE {table} ADD {colum} {typ}")
+        self.conn.commit()
+        print(f"В таблицу {table} добавлен столбец {colum} с типом {typ}")
     
-        
+    def del_colum(self,table,colum):
+        self.cursor.execute(f"ALTER TABLE {table} DROP {colum}")
+        self.conn.commit()
+        print(f"Из таблицы {table} удален столбец {colum}")
+
+    def export_csv(self,table,file_name):
+        self.cursor.execute(f"SELECT * FROM {table}")
+        rows = self.cursor.fetchall()
+        with open(file_name, 'w') as f:
+            for row in rows:
+                f.write(','.join(str(x) for x in row) + '\n')
+        print(f"Таблица {table} экспортирована в файл {file_name}")
+
+    def import_csv(self,table,file_name):
+        with open(file_name, 'r') as f:
+            for line in f:
+                values = line.strip().split(',')
+                self.insert(table, dict(zip(self.table_info(table), values)))
+        print(f"Данные из файла {file_name} импортированы в таблицу {table}")
   
 
 
 
 
-"""новые запросы для лр_1"""
 
 
 
