@@ -1,5 +1,6 @@
 import pymysql
-from config import DB_CONFIG
+from app.config import DB_CONFIG
+
 
 
 class Database:
@@ -67,28 +68,44 @@ class Database:
         self.conn.commit()
         print(f"Таблица {table} полносью удалена")
 
+    """новые запросы для лр_1"""
+
+
+    def col_desc(self,table,colum):
+        self.cursor.execute(f"SELECT {colum} FROM {table} ORDER BY {colum} DESC")
+        self.conn.commit()
+        print(f"Таблица {table} отсартирована убывающе по столбцу {colum} ")
+    
+    def id_range(self,table,start_id,end_id):
+        self.cursor.execute(f"SELECT * FROM {table} WHERE BERWEN {start_id} AND {end_id}")
+        self.conn.commit()
+        print(f"Выведены все значения из талицы {table} в диапазоне айди от {start_id} до {end_id}")
+
+    def id_range(self,table,start_id,end_id):
+        self.cursor.execute(f"DELETE * FROM {table} WHERE BERWEN {start_id} AND {end_id}")
+        self.conn.commit()
+        print(f"Удалены все значения из талицы {table} в диапазоне айди от {start_id} до {end_id}") 
+    
+    def table_info(self,table):
+        self.cursor.execute(f"DISCRIBE {table}")
+        return self.cursor.fetchall()
+
+    def find_value(self,table,colum,value)
+        self.cursor.execute(f"SELECT * FROM {table} WHERE {column} = {value}")
+        print(f"Выведены все столбцы {colum} со значением {value}")
+        
+
+    
+        
+  
 
 
 
 
-    def close(self):
-
-        self.conn.close()
-        print("Соединение закрыто(так просили в документации pymysql)")
+"""новые запросы для лр_1"""
 
 
-db = Database()
-# пишите свой запрос
-
-# db.create_table('python_auto',
-#                 {'name': 'Varchar(255)',
-#                  'lastname': 'Varchar(255)',
-#                  'age': 'INT'
-#                  })
-db.drop('test69')
 
 
-# после чего обязательо разорвать соединение
-db.close()
 
 
