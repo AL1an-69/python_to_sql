@@ -79,23 +79,23 @@ class Database:
         self.conn.commit()
         print(f"Таблица {table} отсартирована убывающе по столбцу {colum} ")
     
-    def id_range_select(self,table,start_id,end_id):
-        self.cursor.execute(f"SELECT * FROM {table} WHERE BERWEN {start_id} AND {end_id}")
+    def id_range_select(self, table, start_id, end_id):
+        self.cursor.execute(f"SELECT * FROM {table} WHERE id BETWEEN {start_id} AND {end_id}")
         self.conn.commit()
-        print(f"Выведены все значения из талицы {table} в диапазоне айди от {start_id} до {end_id}")
+        print(f"Выведены все значения из таблицы {table} в диапазоне айди от {start_id} до {end_id}")
 
-    def id_range_delete(self,table,start_id,end_id):
-        self.cursor.execute(f"DELETE * FROM {table} WHERE BERWEN {start_id} AND {end_id}")
+    def id_range_delete(self, table, start_id, end_id):
+        self.cursor.execute(f"DELETE FROM {table} WHERE id BETWEEN {start_id} AND {end_id}")
         self.conn.commit()
-        print(f"Удалены все значения из талицы {table} в диапазоне айди от {start_id} до {end_id}") 
+        print(f"Удалены все значения из таблицы {table} в диапазоне айди от {start_id} до {end_id}") 
     
-    def table_info(self,table):
-        self.cursor.execute(f"DISCRIBE {table}")
+    def table_info(self, table):
+        self.cursor.execute(f"DESCRIBE {table}")
         return self.cursor.fetchall()
 
-    def find_value(self,table,colum,value)
+    def find_value(self, table, column, value):
         self.cursor.execute(f"SELECT * FROM {table} WHERE {column} = {value}")
-        print(f"Выведены все столбцы {colum} со значением {value}")
+        print(f"Выведены все строки из таблицы {table}, где {column} = {value}")
         
     def add_colum(self,table,colum,typ):
         self.cursor.execute(f"ALTER TABLE {table} ADD {colum} {typ}")
@@ -121,7 +121,13 @@ class Database:
                 values = line.strip().split(',')
                 self.insert(table, dict(zip(self.table_info(table), values)))
         print(f"Данные из файла {file_name} импортированы в таблицу {table}")
-  
+
+    def close(self):
+        """Закрыть соединение с базой данных"""
+        self.cursor.close()
+        self.conn.close()
+        print("Соединение с базой данных закрыто")
+
 
 
 
